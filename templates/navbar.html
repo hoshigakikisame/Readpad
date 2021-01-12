@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
+  <a class="navbar-brand" href="/">NOVEL STORE</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link" href="#">About</a>
+      {# <a class="nav-link" href="{% url 'portofolio:portofolio' %}">Portofolio</a> #}
+      <a class="nav-link" href="#">Contact</a>
+    </div>
+
+  </div>
+  <form class="form-inline my-2 my-lg-0" action="/search/" method="get">
+          <input class="search-input form-control mr-sm-2" style="position: relative;border-radius: 50px" type="search" name="query" value="{{q}}" placeholder="Search" aria-label="Search" required>
+        </form>
+  {% if not request.user.is_authenticated %}
+    <a class="btn btn-warning text-light my-2 my-sm-0" href="{% url 'userAuth:login' %}"><b>Login</b></a>
+  {% else %}
+    <ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-link btn btn-light text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{request.user}}
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'novel:pesanan' %}">Pesanan saya</a>
+          {# <a class="dropdown-item" href="{% url 'auth:pesan' %}">Pesan</a> #}
+          <a class="dropdown-item bg-danger text-light" href="{% url 'userAuth:logout' %}">Logout</a>
+        </div>
+      </li>
+    </ul>
+  {% endif %}
+  
+</nav>

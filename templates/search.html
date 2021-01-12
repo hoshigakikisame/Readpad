@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{# <link rel="stylesheet" type="text/cs" href="{% static "css/style.css" %}"> #}
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="{% static "css/novel.css" %}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<style>
+		.error-div{
+			display: flex; margin: auto; width: 50%;
+			justify-content: space-between;
+		}
+
+		@media only screen and (max-width: 869px){
+			.error-div{
+				display: block;
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+	{% include "navbar.html" %}
+	<br><br>
+		
+	</div>
+	<div class="container">
+		{% if not novel_search %}
+		<h2><b>We couldn't find anything </b></h2>
+		<hr style="border: solid 2px orange">	
+		<div class="container">
+			<br>
+			<div class="error-div" align="center">
+				<h1 style="font-size: 10vh; margin: auto">Error </h1>
+				<h1 class="display-4" style="margin: auto; font-size: 20vh">404</h1>
+			</div>
+		</div>
+		{% else %}
+		<h2><b>Search for : {{q}}</b></h2>
+		<hr style="border: solid 2px orange">
+		<div class="container">
+			<div class="row row-cols-1 row-cols-md-2">
+				{% for novel in novel_search %}
+				<div class="col mb-2">
+					<div class="card mb-4" style="max-width: 520px;">
+						<div class="row no-gutters">
+							<div class="col-md-4">
+								<img src="{{novel.thumbnail.url}}" style="object-fit: cover; height: 250px" class="card-img" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h5 class="card-title">{{novel.judul}}</h5>
+									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Rp {{novel.harga}}</b></button>
+									{% if novel.stok <= 0 %}
+									<button class="card-text text-light btn btn-danger rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Stock Out</b></button>
+									{% else %}	
+									<button class="card-text text-light btn btn-primary rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Stock {{novel.stok}}</b></button>
+									{% endif %}
+									<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px" data-toggle="modal" data-target="#exampleModal{{forloop.counter}}"><b>Detail Produk</b></button><br><br>
+									<p class="card-text">{{novel.deskripsi|striptags|truncatechars:100}}</p>
+									<p class="card-text"><small class="text-muted">{{novel.upload}}</small></p>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">{{novel.judul}}</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+
+										<div class="card mb-3" style="max-width: 540px;">
+											<div class="row no-gutters">
+												<div class="col-md-4">
+													<img src="{{novel.thumbnail.url}}" class="card-img" alt="...">
+												</div>
+												<div class="col-md-8">
+													<div class="card-body">
+														<h4 class="card-title">{{novel.judul}}</h4>
+														<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Rp {{novel.harga}}</b></button>
+														{% if novel.stok <= 0 %}
+														<button class="card-text text-light btn btn-danger rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Stock Out</b></button>
+														{% else %}	
+														<button class="card-text text-light btn btn-primary rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Stock {{novel.stok}}</b></button>
+														{% endif %}
+														<br><br>
+														<h6 class="card-text">Pengarang : {{novel.pengarang}}</h6>
+														<h6 class="card-text">Penerbit : {{novel.penerbit}}</h6>
+														<h6 class="card-text"><small class="text-muted">{{novel.upload}}</small></p>
+														</div>
+													</div>
+													<div class="container p-3">
+														<p style="text-justify: inter-word; text-align: justify" class="card-text">{{novel.deskripsi}}</p>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											{# <div style="text-align: center"> #}
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+												<a type="button" class="btn btn-warning text-light" href="{% url 'novel:pesan' novel.id %}">
+													<b>Pesan</b>
+												</a>
+											{# </div> #}
+											{# <a class="btn btn-primary" href="{{novel.file.url}}">Download</a> #}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+		<script>
+		{% if not request.user.is_authenticated %}
+		    $('.download-btn').attr("href", "{% url 'auth:signin' %}");
+		{% endif %}
+		$('.novel-card').hover(
+			function(){ $(this).addClass('shadow') },
+			function(){ $(this).removeClass('shadow') }
+			);
+		</script>
+
+		</body>
+		</html>
