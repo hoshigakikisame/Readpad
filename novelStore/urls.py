@@ -25,6 +25,8 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('userAuth/', include(('userAuth.urls', 'userAuth'), namespace="userAuth")),
     path('novel/', include(('novel.urls', 'novel'), namespace="novel")),
+    path('staff/', views.staffPage, name="staffPage"),
+    path('konfirmasi/<str:id_pesanan>', views.konfirmasi, name="konfirmasi"),
 ]
 
 if settings.DEBUG:

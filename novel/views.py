@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url="/userAuth/login/")
 def pesanan(request):
-	pesanan_user = models.Pesanan.objects.filter(user=request.user).order_by('-tgl_pesan')
+	pesanan_user = models.Pesanan.objects.filter(user=request.user, aktif=True).order_by('-tgl_pesan')
 	return render(request, "pesanan.html", {'semua_pesanan':pesanan_user})
 
 @login_required(login_url="/userAuth/login/")
@@ -48,6 +48,13 @@ def pesan_novel(request, id_novel):
 			print(form.errors)
 
 	return render(request, 'buat_pesanan.html', context)
+
+@login_required(login_url="/userAuth/login/")
+def pesanan_selesai(request, id_pesanan):
+	pesanan = models.Pesanan.objects.get(id=id_pesanan)
+	pesanan.aktif = False
+	pesanan.save()
+	return redirect('novel:pesanan')
 
 @login_required(login_url="/userAuth/login/")
 def batalkan_pesanan(request, id_pesanan):

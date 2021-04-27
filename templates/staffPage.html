@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Novel Store</title>
+	{# <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"> #}
+	{# <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"> #}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+	{% include "navbar.html" %}
+
+	<section class="banner">
+		<br><br><br>	
+		<h2 align="center"> Staff Page </h2>
+	</section>
+
+	<div class="container">
+		<br><br>
+		<h1 align="center">Pesanan Aktif</h1><hr style="border: solid 2px orange">
+
+		<div class="container">
+			<div class="row row-cols-1 row-cols-md-2">
+				{% for novel in pesanan %}
+				<div class="col mb-2">
+					<div class="card mb-4" style="max-width: 520px;">
+						<div class="row no-gutters">
+							<div class="col-md-4">
+								<img src="{{novel.id_novel.thumbnail.url}}" style="object-fit: cover; height: 250px" class="card-img" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h5 class="card-title">{{novel.judul}}</h5>
+									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Total Rp {{novel.total_bayar}}</b></button>
+									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Jumlah {{novel.jumlah_pesan}}</b></button>
+									<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px" data-toggle="modal" data-target="#exampleModal{{forloop.counter}}"><b>{{novel.alamat_pembeli}}</b></button><br><br>
+									{% if novel.bukti_tf %}
+									<p class="card-text"><a href="{{novel.bukti_tf.url}}">Bukti Transfer</a></p>
+									{% else %}
+									<p class="card-text">Belum ada bukti transfer</p>
+									{% endif %}
+									{% if novel.konfirmasi == True %}
+									<a class="card-text text-light btn btn-secondary rounded-pill" href="{% url 'konfirmasi' novel.id %}" style="font-size: 15px;  padding: 0 5px"><b>Batalkan Konfirmasi</b></a><br><br>
+									{% else %}
+									<a class="card-text text-light btn btn-primary rounded-pill" style="font-size: 15px;  padding: 0 5px" href="{% url 'konfirmasi' novel.id %}"><b>Konfirmasi</b></a><br><br>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{% endfor %}
+			</div>
+		</div>
+		<h1 align="center">Pesanan Selesai</h1><hr style="border: solid 2px orange">
+		<div class="container">
+			<div class="row row-cols-1 row-cols-md-2">
+				{% for novel in pesanan_selesai %}
+				<div class="col mb-2">
+					<div class="card mb-4" style="max-width: 520px;">
+						<div class="row no-gutters">
+							<div class="col-md-4">
+								<img src="{{novel.id_novel.thumbnail.url}}" style="object-fit: cover; height: 250px" class="card-img" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h5 class="card-title">{{novel.judul}}</h5>
+									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Total Rp {{novel.total_bayar}}</b></button>
+									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Jumlah {{novel.jumlah_pesan}}</b></button>
+									<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px" data-toggle="modal" data-target="#exampleModal{{forloop.counter}}"><b>{{novel.alamat_pembeli}}</b></button><br><br>
+									{% if novel.bukti_tf %}
+									<p class="card-text"><a href="{{novel.bukti_tf.url}}">Bukti Transfer</a></p>
+									{% else %}
+									<p class="card-text">Belum ada bukti transfer</p>
+									{% endif %}
+									<a class="card-text text-light btn btn-secondary rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Pesanan telah selesai</b></a><br><br>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -34,7 +34,7 @@
 									<button class="card-text text-light btn btn-success rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>Total Bayar Rp {{novel.total_bayar}}</b></button>
 									<button class="card-text text-light btn btn-primary rounded-pill" style="font-size: 15px;  padding: 0 5px"><b>jumlah {{novel.jumlah_pesan}}</b></button>
 									{% if novel.bukti_tf and novel.konfirmasi == 1 %}
-										<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px; margin-top: 5px"><b>Pesanan sedang diproses</b></button>
+										<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px; margin-top: 5px"><b>Dalam Pengiriman</b></button>
 									{% elif novel.bukti_tf %}
 										<button class="card-text text-light btn btn-warning rounded-pill" style="font-size: 15px;  padding: 0 5px; margin-top: 5px"><b>Menunggu konfirmasi</b></button>
 									{% else %}
@@ -46,7 +46,10 @@
 									</a>
 									{% endif %}<br><br>
 									<p class="card-text">{{novel.id_novel.deskripsi|striptags|truncatechars:50}}</p>
-									<p class="card-text"><small class="text-muted">{{novel.tgl_pesan}}</small></p>
+									{# <p class="card-text"><small class="text-muted">{{novel.tgl_pesan}}</small></p> #}
+									<a href="{% url 'novel:pesanan_selesai' novel.id %}">
+										<button class="card-text text-light btn btn-secondary" style="font-size: 15px;"><b>Pesanan Selesai</b></button>
+									</a>
 								</div>
 							</div>
 						</div>
